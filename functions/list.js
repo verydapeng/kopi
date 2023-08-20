@@ -1,5 +1,5 @@
 export async function onRequest(context) {
-    let keys = (await env.KOPI.list()).keys;
+    let keys = (await context.env.KOPI.list()).keys;
     let v = {};
 
     for (let { name } of keys) {
