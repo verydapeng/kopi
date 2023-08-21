@@ -22,15 +22,11 @@
 
     <script type="module">
 
-        let resp = await fetch("/list");
-        let order = await resp.json();
-
-        let summary = {};
-
-        for (let [name, drink] of Object.entries(order)) {
-            summary[drink] = summary[drink] || [];
-            summary[drink].push(name);
-        }
+        let summary = Object.entries(await fetch("/list").then(r => r.json())).reduce((m, [name, drink]) => {
+            m[drink] = m[drink] || [];
+            m[drink].push(name);
+            return m
+        }, {});
 
         document.querySelector("#summary").innerHTML = Object.entries(summary).map(([drink, names]) =>
             `
