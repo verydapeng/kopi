@@ -25,7 +25,7 @@
                summary[drink] = summary[drink] || [];
                summary[drink].push(name);
             }
-
+            
             document.querySelector("#summary").innerHTML = Object.entries(summary).map(([drink, names]) => {
 
                 return `
@@ -34,7 +34,9 @@
                     ${names.map(n=> `<li>${n}</li>`).join("")}
                     </ul>
                 `;
-            }).join("");
+            }).join("") + `
+                <div>Total drinks: ${Object.entries(summary).length}</div>
+            `;
 
         })()
         
