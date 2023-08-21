@@ -23,8 +23,7 @@
     <script type="module">
 
         let summary = Object.entries(await fetch("/list").then(r => r.json())).reduce((m, [name, drink]) => {
-            m[drink] = m[drink] || [];
-            m[drink].push(name);
+            m[drink] = [...(m[drink] || []), name];
             return m
         }, {});
 
