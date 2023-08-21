@@ -81,41 +81,40 @@
 
     <script>
         function change(e) {
-            let t = e.target
+            let t = e.target;
             if (t.type === 'checkbox') {
-                localStorage[t.id] = t.checked
+                localStorage[t.id] = t.checked;
             } else {
-                localStorage[t.id] = t.value
+                localStorage[t.id] = t.value;
             }
         }
 
-        let inputs = "name,drink,o,c,siewdai,kosong,bing".split(",").map(id => document.getElementById(id))
+        let inputs = "name,drink,o,c,siewdai,kosong,bing".split(",").map(id => document.getElementById(id));
 
         inputs.forEach(el => {
-            el.value = localStorage[el.id] || ""
-            el.checked = localStorage[el.id] === "true"
-            el.onchange = change
-        })
+            el.value = localStorage[el.id] || "";
+            el.checked = localStorage[el.id] === "true";
+            el.onchange = change;
+        });
 
         document.getElementById("form").onsubmit = async function (e) {
-            e.preventDefault()
+            e.preventDefault();
 
             let drink = "drink,o,c,siewdai,kosong,bing".split(",").map(id => {
-                let el = document.getElementById(id)
+                let el = document.getElementById(id);
 
                 if (el.type === 'checkbox') {
-                    return el.checked ? el.id : ""
+                    return el.checked ? el.id : "";
                 } else {
-                    return el.value
+                    return el.value;
                 }
-            }).filter(str => str.length > 0).join(" ")
+            }).filter(str => str.length > 0).join(" ");
 
             if (confirm(`Confirm to order? \r\n\r\n${drink}`)) {
 
-                let resp = await fetch(['/record?name=', encodeURIComponent(document.getElementById("name").value), "&drink=", drink].join(""))
+                let resp = await fetch(['/record?name=', encodeURIComponent(document.getElementById("name").value), "&drink=", drink].join(""));
 
-                alert(await resp.text())
-
+                alert(await resp.text());
             }
         }
 

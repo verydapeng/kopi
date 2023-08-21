@@ -20,32 +20,29 @@
         <div id="summary">loading ...</div>
     </div>
 
-    <script>
-        (async () => {
-            let resp = await fetch("/list");
-            let order = await resp.json();
+    <script type="module">
 
-            let summary = {};
+        let resp = await fetch("/list");
+        let order = await resp.json();
 
-            for (let [name, drink] of Object.entries(order)) {
-                summary[drink] = summary[drink] || [];
-                summary[drink].push(name);
-            }
+        let summary = {};
 
-            document.querySelector("#summary").innerHTML = Object.entries(summary).map(([drink, names]) => {
+        for (let [name, drink] of Object.entries(order)) {
+            summary[drink] = summary[drink] || [];
+            summary[drink].push(name);
+        }
 
-                return `
-                    <h3>${drink} (${names.length})</h3>
-                    <ul>
-                    ${names.map(n => `<li>${n}</li>`).join("")}
-                    </ul>
-                `;
-            }).join("") + `
+        document.querySelector("#summary").innerHTML = Object.entries(summary).map(([drink, names]) =>
+            `
+                <h3>${drink} (${names.length})</h3>
+                
+                <ul>
+                ${names.map(n => `<li>${n}</li>`).join("")}
+                </ul>
+            `
+        ).join("") + `
                 <div>Total drinks: ${Object.entries(summary).length}</div>
-            `;
-
-        })()
-
+        `;
 
     </script>
 
