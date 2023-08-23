@@ -29,7 +29,7 @@
             return m
         }, {});
 
-        document.querySelector("#summary").innerHTML = Object.entries(summary).sort(([drink0], [drink1]) => drink0 < drink1).map(([drink, names]) =>
+        document.querySelector("#summary").innerHTML = Object.entries(summary).sort().map(([drink, names]) =>
             `
                 <h3>${drink} (${names.length})</h3>
                 
