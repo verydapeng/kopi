@@ -24,12 +24,12 @@
 
         let orders = Object.entries(await fetch("/list").then(r => r.json()));
 
-        let summary = orders.reduce((m, [name, drink]) => {
+        let summary = orders.reduce((m, { name, drink }) => {
             m[drink] = [...(m[drink] || []), name];
             return m
         }, {});
 
-        document.querySelector("#summary").innerHTML = Object.entries(summary).map(([drink, names]) =>
+        document.querySelector("#summary").innerHTML = Object.entries(summary).sort(([drink0], [drink1]) => drink0 < drink1).map(([drink, names]) =>
             `
                 <h3>${drink} (${names.length})</h3>
                 
@@ -38,7 +38,7 @@
                 </ul>
             `
         ).join("") + `
-                <div>Total drinks: ${Object.keys(orders).length}</div>
+                <div>Total drinks: ${orders.length}</div>
         `;
 
     </script>

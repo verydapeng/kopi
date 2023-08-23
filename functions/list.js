@@ -1,10 +1,12 @@
-export async function onRequest({env}) {
+export async function onRequest({ env }) {
     let keys = (await env.KOPI.list()).keys;
-    let v = {};
 
-    for (let { name } of keys) {
-        v[name] = await env.KOPI.get(name);
-    }
+    let response = Promise.all(keys.map(async name => {
+        return {
+            name,
+            drink: (await env.KOPI.get(name))
+        }
+    }));
 
-    return new Response(JSON.stringify(v), { headers: { "Content-Type": "application/json" } });
+    return new Response(JSON.stringify(response), { headers: { "Content-Type": "application/json" } });
 }
