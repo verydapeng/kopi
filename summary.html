@@ -22,7 +22,9 @@
 
     <script type="module">
 
-        let summary = Object.entries(await fetch("/list").then(r => r.json())).reduce((m, [name, drink]) => {
+        let orders = Object.entries(await fetch("/list").then(r => r.json()));
+
+        let summary = orders.reduce((m, [name, drink]) => {
             m[drink] = [...(m[drink] || []), name];
             return m
         }, {});
@@ -36,7 +38,7 @@
                 </ul>
             `
         ).join("") + `
-                <div>Total drinks: ${Object.entries(summary).length}</div>
+                <div>Total drinks: ${Object.keys(orders).length}</div>
         `;
 
     </script>
