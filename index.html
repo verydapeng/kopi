@@ -42,8 +42,8 @@
 
         <div class="mb-3">
             <label class="form-label" for="mod">Customize (for kopi / teh only)</label>
-            <select class="form-select" id="mod" required>
-                <option value="">----</option>
+            <select class="form-select" id="mod">
+                <option value=""></option>
                 <option value="C">C</option>
                 <option value="C Siewdai">C Siewdai</option>
                 <option value="O">O</option>
@@ -107,7 +107,11 @@
                 }
             });
 
-            let drinkText = drink[0].match(/Kopi|Teh/) ? drink.join(" ") : (drink[0] + " " + drink[2])
+            if (!drink[0].match(/Kopi|Teh/)) {
+                drink[1] = "";
+            }
+            
+            let drinkText = drink.filter(s => s.length > 0).join(" ");
 
             if (confirm(`Confirm to order? \r\n\r\n${drinkText}`)) {
 
