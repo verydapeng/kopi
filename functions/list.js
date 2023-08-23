@@ -1,6 +1,6 @@
 export async function onRequest({ env }) {
-    let response = [];    
-    for (let name of (await env.KOPI.list()).keys) {
+    let response = [];
+    for (let { name } of (await env.KOPI.list()).keys) {
         response.push({
             name,
             drink: await env.KOPI.get(name)
