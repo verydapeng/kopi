@@ -14,10 +14,26 @@
 
 <body style="margin-top: 1em;">
 
+    <style>
+        li {
+            line-height: 250%;
+        }
+
+        #summary .checked, 
+        #summary h3.checked+ul li {
+            text-decoration: line-through;
+        }
+
+    </style>
+
 
     <div class="container">
         <h1>Kopi Morgan</h1>
         <div id="summary">loading ...</div>
+
+        <div>
+            To tally the order, click on the name/drink to strike through
+        </div>
     </div>
 
     <script type="module">
@@ -29,17 +45,36 @@
             return m
         }, {});
 
-        document.querySelector("#summary").innerHTML = Object.entries(summary).sort().map(([drink, names]) =>
-            `
-                <h3>${drink} (${names.length})</h3>
-                
-                <ul>
-                ${names.map(n => `<li>${n}</li>`).join("")}
-                </ul>
-            `
-        ).join("") + `
-                <div>Total drinks: ${orders.length}</div>
-        `;
+
+        t(document.querySelector("#summary"), { text: "" }, Object.entries(summary).sort().flatMap(([drink, names]) => [
+            t("h3", { text: `${drink} (${names.length})` }),
+            t("ul", {}, names.map(n => t("li", { text: n })))
+        ]));
+
+        t(document.querySelector("#summary"), {}, [
+            t("div", {text: `Total drinks: ${orders.length}`})
+        ]);
+
+        function t(tag, { text }, children = []) {
+
+            let e = tag instanceof Node ? tag : document.createElement(tag);
+            if (text !== undefined) {
+                e.innerText = text;
+            }
+
+            for (let child of children) {
+                e.appendChild(child);
+            }
+            return e;
+        }
+
+        document.querySelector("#summary").addEventListener("click", e => {
+            let t = e.target;
+
+            if (t.tagName === "LI" || t.tagName === "H3" ) {
+                t.classList.toggle("checked");
+            }
+        });
 
     </script>
 
