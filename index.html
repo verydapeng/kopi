@@ -10,6 +10,14 @@
     <title>Kopi Morgan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <style>
+        #mfd {
+            border-top: #d7d7d7 solid 1px;
+        }
+        #mfd button {
+            margin-right: 10px;
+        }
+    </style>
 </head>
 
 <body style="margin-top: 1em;">
@@ -76,6 +84,8 @@
             (order again to change your mind)
         </div>
 
+        <div id="mfd"><p>Most Frequent Orders</p></div>
+        
         <hr>
 
         <div class="mb-3">
@@ -99,6 +109,32 @@
                 localStorage[t.id] = t.value;
             }
         }
+        async function orderDrink(name, drinkText) {
+            let resp = await fetch(['/record?name=', encodeURIComponent(name), "&drink=", drinkText].join(""));
+
+            alert(await resp.text());
+            location.href = '/summary';
+        }
+        let lastOrders = localStorage.getItem("lastOrders") ? JSON.parse(localStorage.getItem("lastOrders")) : [];
+        if(!lastOrders.length) document.querySelector("#mfd").style ="display:none;"
+        function updateMFD(name, drinkText) {
+            lastOrders = [...new Set([`${name}::${drinkText}`, ...lastOrders])].slice(0, 3)
+            localStorage.setItem("lastOrders", JSON.stringify(lastOrders))
+        }
+
+        lastOrders.map(x => x.split("::")).forEach(([name, drinkText]) => {
+            const mfd = document.querySelector("#mfd");
+            const btn = document.createElement("button")
+            btn.classList.add("btn", "btn-primary")
+            btn.value = drinkText;
+            btn.innerHTML = drinkText;
+            mfd.append(btn)
+            btn.addEventListener("click", (e) => {
+                e.preventDefault();
+                updateMFD(name, drinkText)
+                orderDrink(name, drinkText);
+            })
+        })
 
         let inputs = "name,drink,mod,bing".split(",").map(id => document.getElementById(id));
 
@@ -128,10 +164,9 @@
             let drinkText = drink.filter(s => s.length > 0).join(" ");
 
             if (confirm(`Confirm to order? \r\n\r\n${drinkText}`)) {
-
-                let resp = await fetch(['/record?name=', encodeURIComponent(document.getElementById("name").value), "&drink=", drinkText].join(""));
-
-                alert(await resp.text());
+                const name = document.getElementById("name").value
+                updateMFD(name, drinkText)
+                orderDrink(name, drinkText);
             }
         }
 
