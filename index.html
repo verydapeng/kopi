@@ -14,6 +14,7 @@
         #mfd {
             border-top: #d7d7d7 solid 1px;
         }
+
         #mfd button {
             margin-right: 10px;
         }
@@ -84,8 +85,10 @@
             (order again to change your mind)
         </div>
 
-        <div id="mfd"><p>Most Frequent Orders</p></div>
-        
+        <div id="mfd">
+            <h3>Order again</h3>
+        </div>
+
         <hr>
 
         <div class="mb-3">
@@ -95,6 +98,10 @@
         <div class="mb-3">
             <a href="https://blog.seedly.sg/singapore-coffee-kopi-tea-teh-guide-difference-in-price-how-to-order/">Learn
                 the terminology</a>
+        </div>
+
+        <div class="mb-3">
+            <a href="https://www.oldteahut.com/menu.html">menu</a>
         </div>
     </form>
 
@@ -109,32 +116,45 @@
                 localStorage[t.id] = t.value;
             }
         }
-        async function orderDrink(name, drinkText) {
-            let resp = await fetch(['/record?name=', encodeURIComponent(name), "&drink=", drinkText].join(""));
+        async function orderDrink(drinkText) {
+            updateRecentOrders(drinkText);
+
+            if (!confirm(`Confirm to order? \r\n\r\n${drinkText}`)) {
+                return;
+            }
+
+            let resp = await fetch(['/record?name=', encodeURIComponent(document.getElementById("name").value), "&drink=", drinkText].join(""));
 
             alert(await resp.text());
             location.href = '/summary';
         }
-        let lastOrders = localStorage.getItem("lastOrders") ? JSON.parse(localStorage.getItem("lastOrders")) : [];
-        if(!lastOrders.length) document.querySelector("#mfd").style ="display:none;"
-        function updateMFD(name, drinkText) {
-            lastOrders = [...new Set([`${name}::${drinkText}`, ...lastOrders])].slice(0, 3)
-            localStorage.setItem("lastOrders", JSON.stringify(lastOrders))
+
+        let recentOrders = localStorage.getItem("recentOrders") ? JSON.parse(localStorage.getItem("recentOrders")) : [];
+        if (!recentOrders.length) {
+            document.querySelector("#mfd").style = "display:none;"
         }
 
-        lastOrders.map(x => x.split("::")).forEach(([name, drinkText]) => {
+        function updateRecentOrders(drinkText) {
+
+            if (recentOrders.filter(v => v === drinkText).length == 0) {
+                recentOrders= [drinkText, ...recentOrders].slice(0, 3);
+            }
+
+            localStorage.setItem("recentOrders", JSON.stringify(recentOrders))
+        }
+
+        recentOrders.forEach(drinkText => {
             const mfd = document.querySelector("#mfd");
             const btn = document.createElement("button")
             btn.classList.add("btn", "btn-primary")
-            btn.value = drinkText;
-            btn.innerHTML = drinkText;
-            mfd.append(btn)
-            btn.addEventListener("click", (e) => {
+            btn.innerText = drinkText;
+
+            mfd.append(btn);
+            btn.addEventListener("click", async e => {
                 e.preventDefault();
-                updateMFD(name, drinkText)
-                orderDrink(name, drinkText);
-            })
-        })
+                await orderDrink(drinkText);
+            });
+        });
 
         let inputs = "name,drink,mod,bing".split(",").map(id => document.getElementById(id));
 
@@ -162,12 +182,7 @@
             }
 
             let drinkText = drink.filter(s => s.length > 0).join(" ");
-
-            if (confirm(`Confirm to order? \r\n\r\n${drinkText}`)) {
-                const name = document.getElementById("name").value
-                updateMFD(name, drinkText)
-                orderDrink(name, drinkText);
-            }
+            orderDrink(drinkText);
         }
 
     </script>
