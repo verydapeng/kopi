@@ -28,7 +28,7 @@
 
 
     <div class="container">
-        <h1>Kopi Morgan</h1>
+        <h1>Kopi Morgan<span class="total-order"></span></h1>
         <div id="summary">loading ...</div>
 
         <div>
@@ -45,6 +45,8 @@
     <script type="module">
 
         let orders = await fetch("/list").then(r => r.json());
+
+        document.querySelector(".total-order").innerText = orders.length ? ` (${orders.length})` : '';
 
         let summary = orders.reduce((m, { name, drink }) => {
             m[drink] = [...(m[drink] || []), name];
