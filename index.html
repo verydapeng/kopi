@@ -132,6 +132,9 @@
                 let resp = await fetch(['/record?name=', encodeURIComponent(document.getElementById("name").value), "&drink=", drinkText].join(""));
 
                 alert(await resp.text());
+                
+                location.href = '/summary';
+
             }
         }
 
