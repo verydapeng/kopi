@@ -10,37 +10,36 @@
     <title>Kopi Morgan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-</head>
-
-<body style="margin-top: 1em;">
-
+    <link href="/app.css" rel="stylesheet">
     <style>
-        li {
-            line-height: 250%;
-        }
-
-        #summary .checked, 
-        #summary h3.checked+ul li {
+        #summary .checked,
+        #summary h4.checked+ol li {
             text-decoration: line-through;
         }
 
+        footer {
+            position: fixed;
+            padding: 10px 20px;
+            bottom: 20px;
+            right: 20px;
+        }
     </style>
+</head>
 
+<body style="margin-top: 1em;">
+    <header>
+        <h2>
+            ☕ Kopi Morgan <span class="total-order"></span>
+        </h2>
+    </header>
 
     <div class="container">
-        <h1>Kopi Morgan<span class="total-order"></span></h1>
         <div id="summary">loading ...</div>
-
-        <div>
+        <small>
             To tally the order, click on the name/drink to strike through
-        </div>
-
-        <hr>
-
-        <div class="mb-3">
-            <a class="btn btn-success" href="/index">Back to Order form</a>
-        </div>
+        </small>
     </div>
+    <footer><a class="btn btn-success" href="/index">🔙</a></footer>
 
     <script type="module">
 
@@ -55,21 +54,23 @@
 
 
         t(document.querySelector("#summary"), { text: "" }, Object.entries(summary).sort().flatMap(([drink, names]) => [
-            t("h3", { text: `${drink} (${names.length})` }),
-            t("ul", {}, names.map(n => t("li", { text: n })))
+            t("h4", { text: `${drink} (${names.length})` }),
+            t("ol", {}, names.map(n => t("li", { text: n })))
         ]));
 
         t(document.querySelector("#summary"), {}, [
-            t("div", {text: `Total drinks: ${orders.length}`})
+            t("div", { html: `<b>Total Orders:</b> ${orders.length}` })
         ]);
 
-        function t(tag, { text }, children = []) {
+        function t(tag, { text, html }, children = []) {
 
             let e = tag instanceof Node ? tag : document.createElement(tag);
             if (text !== undefined) {
                 e.innerText = text;
             }
-
+            if (html !== undefined) {
+                e.innerHTML = html;
+            }
             for (let child of children) {
                 e.appendChild(child);
             }
@@ -79,7 +80,7 @@
         document.querySelector("#summary").addEventListener("click", e => {
             let t = e.target;
 
-            if (t.tagName === "LI" || t.tagName === "H3" ) {
+            if (t.tagName === "LI" || t.tagName === "H4") {
                 t.classList.toggle("checked");
             }
         });

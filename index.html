@@ -10,103 +10,97 @@
     <title>Kopi Morgan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link href="/app.css" rel="stylesheet">
     <style>
-        #mfd {
-            border-top: #d7d7d7 solid 1px;
-        }
-
         #mfd button {
             margin-right: 10px;
+        }
+
+        #form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #form>* {
+            margin-bottom: 10px;
         }
     </style>
 </head>
 
-<body style="margin-top: 1em;">
+<body>
 
+    <header>
+        <h2>
+            ☕ Kopi Morgan
+        </h2>
+    </header>
 
-    <form class="container" id="form">
+    <section class="container">
+        <form id="form">
+            <div class="form-group">
+                <label class="form-label" for="name">Name</label>
+                <input class="form-control" type="text" id="name" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="drink">Drink (default is hot)</label>
+                <select class="form-select" id="drink" required>
+                    <option value="Kopi">Kopi</option>
+                    <option value="Teh">Teh</option>
+                    <option value="Lemon Tea">Lemon Tea</option>
+                    <option value="Honey Lemon">Honey Lemon</option>
+                    <option value="Milo">Milo</option>
+                    <option value="Gulamalaka Coffee">Gulamalaka Coffee</option>
+                    <option value="Gulamalaka Teh">Gulamalaka Teh</option>
+                    <option value="Ginger Tea">Ginger Tea</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="mod">Customize (for kopi / teh only)</label>
+                <select class="form-select" id="mod">
+                    <option value="">(default)</option>
+                    <optgroup label="Frequent Order">
+                        <option value="Siewdai">Siewdai</option>
+                        <option value="C">C</option>
+                        <option value="C Siewdai">C Siewdai</option>
+                        <option value="C Kosong">C Kosong</option>
+                        <option value="O">O</option>
+                        <option value="O Siewdai">O Siewdai</option>
+                        <option value="O Kosong">O Kosong</option>
+                    </optgroup>
+                    <optgroup label="Feeling Exortic">
+                        <option value="Gau">Gau</option>
+                        <option value="Po">Po</option>
+                        <option value="O Gau">O Gau</option>
+                        <option value="O Po">O Po</option>
+                        <option value="C Gau">C Gau</option>
+                        <option value="C Po">C Po</option>
+                    </optgroup>
+                </select>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="bing">
+                <label class="form-label" for="bing">Iced</label>
+            </div>
+            <div>
+                Order again to change your mind
+                <button class="btn btn-primary" id="submit">Thank you Ka Yick</button>
+            </div>
+            <div id="mfd">
+                <h3>Order again</h3>
+            </div>
+            <hr>
 
-        <h1>
-            Kopi Morgan
-        </h1>
-
-        <div class="mb-3">
-            <label class="form-label">Name</label>
-            <input class="form-control" id="name" required>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label" for="drink">Drink (default is hot)</label>
-            <select class="form-select" id="drink" required>
-                <option value="Kopi">Kopi</option>
-                <option value="Teh">Teh</option>
-                <option value="Lemon Tea">Lemon Tea</option>
-                <option value="Honey Lemon">Honey Lemon</option>
-                <option value="Milo">Milo</option>
-                <option value="Gulamalaka Coffee">Gulamalaka Coffee</option>
-                <option value="Gulamalaka Teh">Gulamalaka Teh</option>
-                <option value="Ginger Tea">Ginger Tea</option>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label" for="mod">Customize (for kopi / teh only)</label>
-            <select class="form-select" id="mod">
-                <option value="">(default)</option>
-
-                <optgroup label="Frequent Order">
-                    <option value="Siewdai">Siewdai</option>
-                    <option value="C">C</option>
-                    <option value="C Siewdai">C Siewdai</option>
-                    <option value="C Kosong">C Kosong</option>
-                    <option value="O">O</option>
-                    <option value="O Siewdai">O Siewdai</option>
-                    <option value="O Kosong">O Kosong</option>
-                </optgroup>
-
-                <optgroup label="Feel Exortic">
-                    <option value="Gau">Gau</option>
-                    <option value="Po">Po</option>
-                    <option value="O Gau">O Gau</option>
-                    <option value="O Po">O Po</option>
-                    <option value="C Gau">C Gau</option>
-                    <option value="C Po">C Po</option>
-                </optgroup>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <input class="form-check-input" type="checkbox" id="bing">
-            <label class="form-label" for="bing">Iced</label>
-        </div>
-
-        <div class="mb-3">
-            <button class="btn btn-primary" id="submit">Thank you Ka Yick</button>
-            (order again to change your mind)
-        </div>
-
-        <div id="mfd">
-            <h3>Order again</h3>
-        </div>
-
-        <hr>
-
-        <div class="mb-3">
-            <a class="btn btn-success" href="/summary">Show me all the orders</a>
-        </div>
-
-        <div class="mb-3">
-            <a href="https://blog.seedly.sg/singapore-coffee-kopi-tea-teh-guide-difference-in-price-how-to-order/">Learn
-                the terminology</a>
-        </div>
-
-        <div class="mb-3">
+        </form>
+    </section>
+    <footer>
+        <a class="btn btn-success" href="/summary">Show me all the orders</a>
+        <p class="labels">
+            <a href="https://blog.seedly.sg/singapore-coffee-kopi-tea-teh-guide-difference-in-price-how-to-order/">
+                Learn the terminology
+            </a>
             <a href="https://www.oldteahut.com/menu.html">menu</a>
-        </div>
-    </form>
-
-
-
+        </p>
+    </footer>
     <script>
         function change(e) {
             let t = e.target;
@@ -137,7 +131,7 @@
         function updateRecentOrders(drinkText) {
 
             if (recentOrders.filter(v => v === drinkText).length == 0) {
-                recentOrders= [drinkText, ...recentOrders].slice(0, 3);
+                recentOrders = [drinkText, ...recentOrders].slice(0, 3);
             }
 
             localStorage.setItem("recentOrders", JSON.stringify(recentOrders))
@@ -146,7 +140,7 @@
         recentOrders.forEach(drinkText => {
             const mfd = document.querySelector("#mfd");
             const btn = document.createElement("button")
-            btn.classList.add("btn", "btn-primary")
+            btn.classList.add("btn", "btn-secondary")
             btn.innerText = drinkText;
 
             mfd.append(btn);
@@ -181,7 +175,7 @@
                 drink[1] = "";
             }
 
-            let drinkText = drink.filter(s => s.length > 0).join(" ");
+            let drinkText = drink.filter(s => s.length).join(" ");
             orderDrink(drinkText);
         }
 
