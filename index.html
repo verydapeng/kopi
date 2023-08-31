@@ -83,7 +83,7 @@
             </div>
             <div>
                 Order again to change your mind
-                <button class="btn btn-primary" id="submit">Thank you Ka Yick</button>
+                <button class="btn btn-primary" id="submit">Thank you <span id="payeeName"></span></button>
             </div>
             <div id="mfd">
                 <h3>Order again</h3>
@@ -95,13 +95,16 @@
     <footer>
         <a class="btn btn-success" href="/summary">Show me all the orders</a>
         <p class="labels">
-            <a href="https://blog.seedly.sg/singapore-coffee-kopi-tea-teh-guide-difference-in-price-how-to-order/">
+            <a href="https://www.funtoast.com.sg/wp-content/uploads/2014/10/Fun_coffee_guide.pdf">
                 Learn the terminology
             </a>
             <a href="https://www.oldteahut.com/menu.html">menu</a>
         </p>
     </footer>
-    <script>
+    <script type="module">
+        const payeeName = await fetch("/payee").then(d => d.text());
+        document.querySelector("#payeeName").innerText = `- ${payeeName || "dapeng"}`.toUpperCase()
+        console.log(payeeName)
         function change(e) {
             let t = e.target;
             if (t.type === 'checkbox') {
