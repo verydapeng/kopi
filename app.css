@@ -1,0 +1,21 @@
+body {
+  font-family: Open Sans, Roboto, Helvetica, Arial, sans-serif;
+  color: #333;
+  max-width: 600px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 0 auto;
+  padding: 20px;
+  background: url("/background.jpg");
+  background-color: #eac696;
+  background-image: url("https://www.transparenttextures.com/patterns/wood-pattern.png");
+}
+header {
+  height: 60px;
+}
+
+footer .labels {
+  display: flex;
+  justify-content: space-between;
+}
