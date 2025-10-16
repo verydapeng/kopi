@@ -1,4 +1,11 @@
 export async function onRequest({ request }) {
-    await step.sleep("sleep for a bit", "2 minute")
+    
+    function s(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    await s(80000);
+
+
     return new Response("Hi");
 }
